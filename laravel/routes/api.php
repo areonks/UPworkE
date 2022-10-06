@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobVacancyController;
+use App\Models\VacancyResponse;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +21,38 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+Route::group(['prefix' => 'vacancies'], function () {
+    Route::get('', [JobVacancyController::class, 'index']);
+    Route::get('/{jobVacancy}', [JobVacancyController::class, 'show']);
+});
+
+
+Route::middleware('auth:sanctum')->group( function () {
+
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::group(['prefix' => 'vacancies'], function () {
+        Route::post('', [JobVacancyController::class, 'store']);
+        Route::put('/{jobVacancy}', [JobVacancyController::class, 'update'])->middleware('can:update,jobVacancy');
+        Route::delete('/{jobVacancy}', [JobVacancyController::class, 'destroy'])->middleware('can:destroy,jobVacancy');
+        Route::post('/{jobVacancy}/like', [JobVacancyController::class, 'addLike']);
+        Route::post('/{jobVacancy}/unlike', [JobVacancyController::class, 'removeLike']);
+
+        Route::group(['prefix' => '/{jobVacancy}/responses'], function () {
+            Route::get('', [VacancyResponse::class, 'index']);
+            Route::post('', [VacancyResponse::class, 'store']);
+        });
+
+    });
+
+    Route::group(['prefix' => '/responses'], function () {
+        Route::put('/{response}', [VacancyResponse::class, 'update'])->middleware('can:update,comment');
+        Route::delete('/{response}', [VacancyResponse::class, 'destroy'])->middleware('can:destroy,comment');
+        Route::post('/{response}/like', [VacancyResponse::class, 'addLike']);
+        Route::post('/{response}/unlike', [VacancyResponse::class, 'removeLike']);
+
+    });
+
+});

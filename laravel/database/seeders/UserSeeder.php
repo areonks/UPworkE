@@ -21,6 +21,16 @@ class UserSeeder extends Seeder
             'email' => 'email@example.com',
             'password' => Hash::make('password'),
         ]);
-        User::factory()->count(3)->create();
+        User::factory()->count(20)->create();
+        $users = User::all();
+
+        $users->each(function ($user) use ($users) {
+            for ($x = 0; $x < rand(2, 20); $x++) {
+                $randomUser = $users->random()->id;
+                if ($user->id !== $randomUser) {
+                    $user->addLike($randomUser);
+                }
+            }
+        });
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasLikes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
 
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, HasLikes;
 
     protected $fillable = [
         'username',
@@ -28,12 +29,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function jobVacancy()
+    protected $appends = ['likes'];
+
+    public function getLikesAttribute()
+    {
+        return $this->likedUsers()->count();
+    }
+
+    public function jobVacancies()
     {
         return $this->hasMany(JobVacancy::class);
     }
 
-    public function vacancyResponse()
+    public function vacancyResponses()
     {
         return $this->hasMany(VacancyResponse::class);
     }

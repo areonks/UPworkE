@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasLikes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,11 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class VacancyResponse extends Model
 {
-    use HasFactory;
+    use HasFactory, HasLikes;
 
     protected $fillable = [
         'content'
     ];
+
+    protected $withCount = ['likedUsers'];
+
 
     public function user()
     {
