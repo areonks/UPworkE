@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobVacancyController;
-use App\Models\VacancyResponse;
+use App\Http\Controllers\VacancyResponseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,17 +41,17 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::post('/{jobVacancy}/unlike', [JobVacancyController::class, 'removeLike']);
 
         Route::group(['prefix' => '/{jobVacancy}/responses'], function () {
-            Route::get('', [VacancyResponse::class, 'index']);
-            Route::post('', [VacancyResponse::class, 'store']);
+            Route::get('', [VacancyResponseController::class, 'index']);
+            Route::post('', [VacancyResponseController::class, 'store']);
         });
 
     });
 
     Route::group(['prefix' => '/responses'], function () {
-        Route::put('/{response}', [VacancyResponse::class, 'update'])->middleware('can:update,comment');
-        Route::delete('/{response}', [VacancyResponse::class, 'destroy'])->middleware('can:destroy,comment');
-        Route::post('/{response}/like', [VacancyResponse::class, 'addLike']);
-        Route::post('/{response}/unlike', [VacancyResponse::class, 'removeLike']);
+        Route::put('/{vacancyResponse}', [VacancyResponseController::class, 'update'])->middleware('can:update,vacancyResponse');
+        Route::delete('/{vacancyResponse}', [VacancyResponseController::class, 'destroy'])->middleware('can:destroy,vacancyResponse');
+        Route::post('/{vacancyResponse}/like', [VacancyResponseController::class, 'addLike']);
+        Route::post('/{vacancyResponse}/unlike', [VacancyResponseController::class, 'removeLike']);
 
     });
 

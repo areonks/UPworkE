@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\JobVacancy;
+use App\Models\VacancyResponse;
+use App\Policies\VacancyResponsePolicy;
 use App\Policies\JobVacancyPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -15,6 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected array $policies = [
         JobVacancy::class => JobVacancyPolicy::class,
+        VacancyResponse::class => VacancyResponsePolicy::class,
+
     ];
 
     /**

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateJobVacancyRequest extends FormRequest
+class StoreVacancyResponseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class UpdateJobVacancyRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => 'required|string|max:255'
+            'content' => 'required|string|max:255'
         ];
     }
 }
