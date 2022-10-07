@@ -32,6 +32,8 @@ Route::group(['prefix' => 'vacancies'], function () {
 Route::middleware('auth:sanctum')->group( function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/likedUsersVacancies', [JobVacancyController::class, 'likedUsersVacancies']);
+    Route::get('/likedVacancies', [JobVacancyController::class, 'likedVacancies']);
 
     Route::group(['prefix' => 'vacancies'], function () {
         Route::post('', [JobVacancyController::class, 'store']);

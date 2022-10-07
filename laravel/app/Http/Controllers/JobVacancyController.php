@@ -50,9 +50,15 @@ class JobVacancyController extends Controller
         return response()->noContent();
     }
 
-    public function getAllLikedVacancies(Request $request)
+    public function likedVacancies()
     {
-        return JobVacancyResource::collection();
+        return JobVacancyResource::collection(JobVacancy::likedVacancies()->get());
+    }
+
+    public function likedUsersVacancies(Request $request)
+    {
+        $jobVacancy = new JobVacancy();
+        return JobVacancyResource::collection($jobVacancy->usersVacancies($request->user()->userLiked()->get()));
     }
 
 }
