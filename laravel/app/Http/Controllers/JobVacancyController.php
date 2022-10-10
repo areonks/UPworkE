@@ -30,11 +30,7 @@ class JobVacancyController extends Controller
 
     public function store(StoreJobVacancyRequest $request)
     {
-        $jobVacancy = $request->user()->jobVacancies()->create($request->validated());
-        if (array_key_exists('tags', $request->validated())) {
-            $jobVacancy->addTags($request->validated()['tags']);
-        }
-        return new JobVacancyResource($jobVacancy);
+        return  $request->user()->createVacancy($request->validated());
     }
 
     public function update(UpdateJobVacancyRequest $request, JobVacancy $jobVacancy)

@@ -20,9 +20,7 @@ class VacancyResponseController extends Controller
 
     public function store(StoreVacancyResponseRequest $request, JobVacancy $jobVacancy)
     {
-        $vacancyResponse = Auth::user()->vacancyResponses()->make($request->validated());
-        $vacancyResponse = $jobVacancy->vacancyResponses()->save($vacancyResponse);
-        return new VacancyResponseResource($vacancyResponse);
+        return Auth::user()->makeResponse($request->validated(), $jobVacancy);
     }
 
     public function update(UpdateVacancyResponseRequest $request, VacancyResponse $vacancyResponse)
