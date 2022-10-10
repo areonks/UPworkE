@@ -24,7 +24,8 @@ class JobVacancyResource extends JsonResource
             'description' => $this->description,
             'likes' => $this->liked_users_count,
             'isLiked' => $this->is_liked,
-            'created_at'=> $this->created_at
+            'created_at' => $this->created_at,
+            'tags' => TagResource::collection($this->tags),
         ];
     }
 }

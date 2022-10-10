@@ -25,7 +25,9 @@ class StoreJobVacancyRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:80',
-            'description' => 'required|string|max:255'
+            'description' => 'required|string|max:255',
+            'tags' => 'array',
+            'tags.*' => 'string|max:30',
         ];
     }
 }

@@ -29,7 +29,12 @@ class JobVacancy extends Model
 
     public function vacancyResponses()
     {
-        return $this->hasMany( VacancyResponse::class, 'vacancy_id');
+        return $this->hasMany(VacancyResponse::class, 'vacancy_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tags_pivots');
     }
 
     public function scopeLikedVacancies($query)
@@ -48,6 +53,15 @@ class JobVacancy extends Model
             $collection = $collection->concat($user->jobVacancies()->get());
         });
         return $collection;
+    }
+
+    public function addTags($tags)
+    {
+        $tagsCollection = [];
+        foreach (array_unique($tags) as $tag) {
+            array_push($tagsCollection, Tag::firstOrCreate(['name' => $tag])->id);
+        }
+        $this->tags()->sync($tagsCollection);
     }
 
 }
