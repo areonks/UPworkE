@@ -24,6 +24,7 @@ class JobVacancyFactory extends Factory
         return [
             'title' => $this->faker->title(),
             'description' => $this->faker->text(),
+            'created_at' => $this->faker->dateTimeBetween()
 
         ];
     }

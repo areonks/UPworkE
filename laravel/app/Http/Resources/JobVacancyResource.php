@@ -26,6 +26,7 @@ class JobVacancyResource extends JsonResource
             'isLiked' => $this->is_liked,
             'created_at' => $this->created_at,
             'tags' => TagResource::collection($this->tags),
+            'responses' => $this->vacancy_responses_count
         ];
     }
 }

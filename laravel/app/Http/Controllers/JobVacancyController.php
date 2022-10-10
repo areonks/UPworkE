@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetJobVacanciesRequest;
 use App\Http\Requests\StoreJobVacancyRequest;
 use App\Http\Requests\UpdateJobVacancyRequest;
 use App\Http\Resources\JobVacancyResource;
 use App\Models\JobVacancy;
+use App\Repositories\JobVacancyRepositoryInterface;
 use Illuminate\Http\Request;
 
 class JobVacancyController extends Controller
 {
-    public function index()
+    private $jobRepository;
+
+    public function __construct(JobVacancyRepositoryInterface $repository)
     {
-        return JobVacancyResource::collection(JobVacancy::query()->orderBy('created_at', 'DESC')->paginate(5));
+        $this->jobRepository = $repository;
+    }
+    public function index(GetJobVacanciesRequest $request)
+    {
+        return JobVacancyResource::collection($this->jobRepository->getAll($request->validated()));
     }
 
     public function show(JobVacancy $jobVacancy)

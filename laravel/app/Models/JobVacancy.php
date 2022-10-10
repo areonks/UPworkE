@@ -20,7 +20,7 @@ class JobVacancy extends Model
         'description',
     ];
 
-    protected $withCount = ['likedUsers'];
+    protected $withCount = ['likedUsers', 'vacancyResponses'];
 
     public function user()
     {
@@ -62,6 +62,17 @@ class JobVacancy extends Model
             array_push($tagsCollection, Tag::firstOrCreate(['name' => $tag])->id);
         }
         $this->tags()->sync($tagsCollection);
+    }
+
+    public function scopeWithQueryParams($query, $params)
+    {
+        if (array_key_exists('tag_name', $params)) {
+            return $query->orWhereHas('tags', function (Builder $query) use ($params) {
+                $query->where('name', '=', $params['tag_name']);
+            });
+        } else {
+            return $query;
+        }
     }
 
 }
